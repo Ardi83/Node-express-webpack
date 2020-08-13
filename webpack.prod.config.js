@@ -1,7 +1,9 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimiseCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const UglifyJsWebpackPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -14,6 +16,18 @@ module.exports = {
   },
   target: 'web',
   devtool: 'source-map',
+  // Webpack 4 does not have a CSS minifier, although
+  // Webpack 5 will likely come with one
+  optimization: {
+    minimizer: [
+      new UglifyJsWebpackPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true // set to true if you want JS source maps
+      }),
+      new OptimiseCssAssetsWebpackPlugin({})
+    ]
+  },
   module : {
     rules: [
       {
@@ -31,18 +45,22 @@ module.exports = {
         use: [
           {
             loader: 'html-loader',
-            //options: { minimize: true }
+            options: { minimize: true }
           }
         ]
       },
       {
-        test: /\.css$/,
-        use: [ 'style-loader', 'css-loader' ]
+        test: /\.jpg$/,
+        use: { loader: 'url-loader'}
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        use: ['file-loader']
-      }
+        test: /\.css$/,
+        use: [ MiniCssExtractPlugin.loader, 'css-loader' ]
+      },
+      // {
+      //   test: /\.(png|jpg|gif|svg)$/,
+      //   use: ['file-loader']
+      // }
     ]
   },
   plugins: [
@@ -50,6 +68,10 @@ module.exports = {
       template: './src/html/index.html',
       filename: './index.html',
       excludeChunks: ['server']
-    })   
+    }),  
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css'
+    }),
   ]
 }

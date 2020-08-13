@@ -5,7 +5,7 @@
   "scripts": {
     "buildProd": "rm -rf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
     "buildDev": "rm -rf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
-    "start": "nodemon dist/server.js",
+    "start": "node dist/server.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "clean": "rm -rf dist/* dist",
@@ -45,11 +45,16 @@
     "file-loader": "^6.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.10.0",
     "nodemon": "^2.0.4",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "style-loader": "^1.2.1",
     "typescript": "^3.9.7",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^4.1.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
+    "webpack-dev-middleware": "^3.7.2",
     "webpack-node-externals": "^2.5.0"
   }
 }

@@ -1,7 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+const HtmlWebPackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -12,17 +11,15 @@ module.exports = {
     publicPath: '/',
     filename: '[name].js'
   },
+  mode: 'development',
   target: 'web',
   devtool: 'source-map',
-  module : {
+  module: {
     rules: [
       {
-        // Transpiles ES6-8 into ES5
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader'
-        }
+        loader: "babel-loader",
       },
       {
         // Loads the javacript into html template provided.
@@ -30,26 +27,27 @@ module.exports = {
         test: /\.html$/,
         use: [
           {
-            loader: 'html-loader',
+            loader: "html-loader",
             //options: { minimize: true }
           }
         ]
       },
-      {
+      { 
         test: /\.css$/,
         use: [ 'style-loader', 'css-loader' ]
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        use: ['file-loader']
+       test: /\.(png|svg|jpg|gif)$/,
+       use: ['file-loader']
       }
     ]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/html/index.html',
-      filename: './index.html',
-      excludeChunks: ['server']
-    })   
+    new HtmlWebPackPlugin({
+      template: "./src/html/index.html",
+      filename: "./index.html",
+      excludeChunks: [ 'server' ]
+    }),
+    new webpack.NoEmitOnErrorsPlugin()
   ]
 }
